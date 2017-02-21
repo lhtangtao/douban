@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-#name   = main
-#author = tangtao
-#time   = 2017/2/20 16:04
+#name   = __init__.py
+#author = rache
+#time   = 2017/2/21 20:53
 #Description=添加描述信息
 #eMail   =tangtao@lhtangtao.com
 #git     =lhtangtao
@@ -23,13 +23,6 @@ I love animals. They taste delicious.
 ┗┻┛  ┗┻┛
 """
 import sys
-from scrapy import cmdline
-
-from douban.sql.my_sqldb import create_table
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
-if __name__ == '__main__':
-    print create_table()
-    cmdline.execute("scrapy crawl douban".split())
