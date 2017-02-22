@@ -35,8 +35,9 @@ def create_table():
     conn = init_db()
     cur = conn.cursor()
     try:
-        sql_script = 'CREATE TABLE DoubanMovieTop250 (title varchar(30),foreign_title VARCHAR(1000),nation varchar(30),year VARCHAR(30),kind VARCHAR (30),director varchar(30),yanyuan varchar(30),star varchar(30),pingjiarenshu varchar(30),inq varchar(1000), url varchar(300),page varchar(30))'
-        # print sql_script
+        sql_script = 'CREATE TABLE DoubanMovieTop250 (title varchar(30),foreign_title VARCHAR(1000),nation varchar(30),' \
+                     'year VARCHAR(30),kind VARCHAR (30),director varchar(30),yanyuan varchar(30),star DOUBLE ,pingjiarenshu INT ,inq varchar(1000), url varchar(300))'
+        print sql_script
         cur.execute(sql_script)
         x = True
     except Exception as e:
@@ -79,7 +80,7 @@ def update_info(kind, value, title):
     try:
         sql_script0 = "UPDATE DoubanMovieTop250 SET"
         sql_script1 = " %s =" % kind
-        sql_script2 = "('%s')" % value
+        sql_script2 = '("%s")' % value
         sql_script3 = 'where title =("'
         sql_script4 = '")'
         sql_script = sql_script0 + sql_script1 + sql_script2 + sql_script3+title+sql_script4

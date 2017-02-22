@@ -31,6 +31,5 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 if __name__ == '__main__':
-    movieInfo = ' / 12 Angry Men'
-    year =  movieInfo.replace('/','')
-    print year
+    create_table()
+    cmdline.execute("scrapy crawl douban".split())

@@ -45,6 +45,8 @@ class Douban(CrawlSpider):
         selector = Selector(response)
         Movies = selector.xpath('//div[@class="info"]')
         for eachMoive in Movies:
+            url = eachMoive.xpath('div[@class="hd"]/a/@href').extract()[0]
+            url=str(url)
             title = eachMoive.xpath('div[@class="hd"]/a/span/text()').extract()[0]
             # 把两个名称合起来
             fullTitle = ''
@@ -77,6 +79,7 @@ class Douban(CrawlSpider):
             update_info('nation', nation, fullTitle)
             update_info('kind', kind, fullTitle)
             update_info('pingjiarenshu', pingjiashu, fullTitle)
+            update_info('url', url, fullTitle)
             yield item
             nextLink = selector.xpath('//span[@class="next"]/link/@href').extract()
             # 第10页是最后一页，没有下一页的链接
@@ -84,6 +87,7 @@ class Douban(CrawlSpider):
                 nextLink = nextLink[0]
                 # print nextLink
                 yield Request(self.url + nextLink, callback=self.parse)
+
 
 if __name__ == '__main__':
     create_table()
