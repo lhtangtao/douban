@@ -42,9 +42,12 @@ class Douban(CrawlSpider):
     i = 1
 
     def parse(self, response):
+        # print response.body
         item = DoubanItem()
         selector = Selector(response)
+        # print selector
         Movies = selector.xpath('//div[@class="info"]')
+        # print Movies
         for eachMoive in Movies:
             title = eachMoive.xpath('div[@class="hd"]/a/span/text()').extract()[0]
             # 把两个名称合起来
@@ -58,17 +61,17 @@ class Douban(CrawlSpider):
             for each in foreign_title:
                 fullTitle_foreign += each
             print foreign_title
-            movieInfo0 = eachMoive.xpath('div[@class="bd"]/p/text()').extract()[0]  # 此处出现的是导演和主演
             movieInfo1 = eachMoive.xpath('div[@class="bd"]/p/text()').extract()[1]  # 此处出现的是年份和国籍以及类型
             star = eachMoive.xpath('div[@class="bd"]/div[@class="star"]/span[@class="rating_num"]/text()').extract()[0]
-            pingjiashu = eachMoive.xpath('div[@class="bd"]/div[@class="star"]/span/text()').extract()[1]
-            pingjiashu = filter(lambda ch: ch in '0123456789', pingjiashu)  # 去掉评价数中的中文
             quote = eachMoive.xpath('div[@class="bd"]/p[@class="quote"]/span/text()').extract()
             if quote:
                 quote = quote[0]
             else:
                 quote = ''
             quote = str(quote)
+            star = eachMoive.xpath('div[@class="bd"]/div[@class="star"]/span[@class="rating_num"]/text()').extract()[0]
+            pingjiashu = eachMoive.xpath('div[@class="bd"]/div[@class="star"]/span/text()').extract()[1]
+            pingjiashu = filter(lambda ch: ch in '0123456789', pingjiashu)  # 去掉评价数中的中文
             year = str(movieInfo1).replace('/', '*').replace('  ', '').split('*')[0]
             nation = str(movieInfo1).replace('/', '*').replace('  ', '').split('*')[1]
             kind = str(movieInfo1).replace('/', '*').replace('  ', '').split('*')[2]
@@ -80,12 +83,6 @@ class Douban(CrawlSpider):
             update_info('nation', nation, fullTitle)
             update_info('kind', kind, fullTitle)
             update_info('pingjiarenshu', pingjiashu, fullTitle)
-            yield item
-            # nextLink = selector.xpath('//span[@class="next"]/link/@href').extract()
-            # # 第10页是最后一页，没有下一页的链接
-            # if nextLink:
-            #     nextLink = nextLink[0]
-            #     yield Request(self.url + nextLink, callback=self.parse)
 
 
 if __name__ == '__main__':
