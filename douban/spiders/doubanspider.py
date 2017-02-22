@@ -39,7 +39,6 @@ class Douban(CrawlSpider):
     name = "douban"
     start_urls = ['http://movie.douban.com/top250']
     url = 'http://movie.douban.com/top250'
-    i = 1
 
     def parse(self, response):
         item = DoubanItem()
@@ -51,13 +50,11 @@ class Douban(CrawlSpider):
             fullTitle = ''
             for each in title:
                 fullTitle += each
-            print fullTitle
             foreign_title = eachMoive.xpath('div[@class="hd"]/a/span/text()').extract()[1]
             # 把两个名称合起来
             fullTitle_foreign = ''
             for each in foreign_title:
                 fullTitle_foreign += each
-            print foreign_title
             movieInfo0 = eachMoive.xpath('div[@class="bd"]/p/text()').extract()[0]  # 此处出现的是导演和主演
             movieInfo1 = eachMoive.xpath('div[@class="bd"]/p/text()').extract()[1]  # 此处出现的是年份和国籍以及类型
             star = eachMoive.xpath('div[@class="bd"]/div[@class="star"]/span[@class="rating_num"]/text()').extract()[0]
@@ -81,12 +78,12 @@ class Douban(CrawlSpider):
             update_info('kind', kind, fullTitle)
             update_info('pingjiarenshu', pingjiashu, fullTitle)
             yield item
-            # nextLink = selector.xpath('//span[@class="next"]/link/@href').extract()
-            # # 第10页是最后一页，没有下一页的链接
-            # if nextLink:
-            #     nextLink = nextLink[0]
-            #     yield Request(self.url + nextLink, callback=self.parse)
-
+            nextLink = selector.xpath('//span[@class="next"]/link/@href').extract()
+            # 第10页是最后一页，没有下一页的链接
+            if nextLink:
+                nextLink = nextLink[0]
+                # print nextLink
+                yield Request(self.url + nextLink, callback=self.parse)
 
 if __name__ == '__main__':
     create_table()

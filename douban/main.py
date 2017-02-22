@@ -31,6 +31,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 if __name__ == '__main__':
-    movieInfo = '387612人评价'
-    year =  filter(lambda ch: ch in '0123456789', movieInfo)
+    movieInfo = ' / 12 Angry Men'
+    year =  movieInfo.replace('/','')
     print year
